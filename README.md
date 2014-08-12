@@ -6,6 +6,8 @@
 
 ```sh
 git clone...
+brew install freeimage
+
 ```
 
 ## Running
