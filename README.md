@@ -18,7 +18,7 @@ cd storypalette-server
 grunt serve
 ```
 
-You may want to edit /etc/hosts:
+You may want to edit /etc/hosts for local development:
 
 ```
 127.0.0.1 api.storypalette.dev
