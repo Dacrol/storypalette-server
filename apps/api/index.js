@@ -44,30 +44,36 @@ app.use(bodyParser.json());
 
 var apiBase = '/v1/';
 
-app.post(apiBase + 'authenticate', auth.authenticate);
-
+// API status and info.
 app.all(apiBase, api.info.main);
 
+// Authentication API.
+app.post(apiBase + 'authenticate', auth.authenticate);
+
+// Media API.
+app.get(apiBase + 'image/*', fileManager.getImage);
+app.get(apiBase + 'sound/*', fileManager.getSound);
+app.post(apiBase + 'file/*', fileManager.postFile);
+
+// Palette API.
 app.get(apiBase + 'palettes', auth.requireUser, api.palette.list);
 app.get(apiBase + 'palettes/:id', api.palette.get);
 app.post(apiBase + 'palettes', api.palette.create);
 app.put(apiBase + 'palettes/:id', api.palette.update);
 app.delete(apiBase + 'palettes/:id', api.palette.destroy);
-
 app.get(apiBase + 'resources', api.resource.list);
 app.get(apiBase + 'resources/:id', api.resource.get);
 app.post(apiBase + 'resources', api.resource.create);
 app.put(apiBase + 'resources/:id', api.resource.update);
 app.delete(apiBase + 'resources/:id', api.resource.destroy);
-
 app.get(apiBase + 'users', api.user.list);
 app.get(apiBase + 'users/:id', api.user.get);
 app.post(apiBase + 'users', api.user.create);
 app.delete(apiBase + 'users/:id', api.user.remove);
 app.get(apiBase + 'users/:id/players', api.user.getPlayers);
-
 app.get(apiBase + 'organisations', api.organisation.list);
 app.get(apiBase + 'organisations/:id', api.organisation.get);
+
 
 /*
 app.namespace(apiBase + '*', function() {
