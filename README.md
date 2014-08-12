@@ -5,8 +5,9 @@
 ## Installing
 
 ```sh
-git clone...
 brew install freeimage
+brew install mongodb
+git clone ...
 
 ```
 
@@ -16,6 +17,4 @@ brew install freeimage
 cd storypalette-server
 grunt serve
 ```
-
-## Development
 
