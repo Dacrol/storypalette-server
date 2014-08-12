@@ -52,18 +52,18 @@ app.get(apiBase + 'palettes', auth.requireUser, api.palette.list);
 app.get(apiBase + 'palettes/:id', api.palette.get);
 app.post(apiBase + 'palettes', api.palette.create);
 app.put(apiBase + 'palettes/:id', api.palette.update);
-app.del(apiBase + 'palettes/:id', api.palette.destroy);
+app.delete(apiBase + 'palettes/:id', api.palette.destroy);
 
 app.get(apiBase + 'resources', api.resource.list);
 app.get(apiBase + 'resources/:id', api.resource.get);
 app.post(apiBase + 'resources', api.resource.create);
 app.put(apiBase + 'resources/:id', api.resource.update);
-app.del(apiBase + 'resources/:id', api.resource.destroy);
+app.delete(apiBase + 'resources/:id', api.resource.destroy);
 
 app.get(apiBase + 'users', api.user.list);
 app.get(apiBase + 'users/:id', api.user.get);
 app.post(apiBase + 'users', api.user.create);
-app.del(apiBase + 'users/:id', api.user.remove);
+app.delete(apiBase + 'users/:id', api.user.remove);
 app.get(apiBase + 'users/:id/players', api.user.getPlayers);
 
 app.get(apiBase + 'organisations', api.organisation.list);
