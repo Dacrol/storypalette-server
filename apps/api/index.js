@@ -271,18 +271,12 @@ function findClientsSocket(roomId, namespace) {
 
 } // setupSockets
 
-// UI: 51ac6ecbf54d7d411c000007
 
 // Get info about currently connected users/sockets
 app.get(apiBase + 'info/activity', function(req, res) {
   var info = {};
-
-  // Get namespace names
-  //var nsNames = _.keys(io.nsps); 
-  //nsKeys.shift(); // remove first element (global namespace '')
   
   // Get all room names per namespace
-  console.log(_.rest(io.nsps).length);
   _.each(io.nsps, function(ns) {
     info[ns.name] = {
       name: ns.name, 
@@ -290,15 +284,8 @@ app.get(apiBase + 'info/activity', function(req, res) {
       rooms: {}
     };
 
-    //info[ns.name].rooms = _.chain(ns.sockets)
-      //.filter(function(socket) {return socket.rooms.length > 1;})
-      //.map(function(socket) {return _.rest(socket.rooms);})
-      //.value();
-
     // All the sockets connected to this namespace.
     _.each(ns.connected, function(socket) {
-      console.log('socket in ns', ns.name, ' has id', socket.id);
-
       if (!info[ns.name].rooms[socket.spRoom]) {
         info[ns.name].rooms[socket.spRoom] = {
           name: socket.spRoom,
@@ -309,20 +296,13 @@ app.get(apiBase + 'info/activity', function(req, res) {
       info[ns.name].rooms[socket.spRoom].clients.push({
         socketId: socket.id,
         user: socket.spUser
-        //username: user.username,
-        //role: user.role
       });
     });
   });
 
-  //console.log(JSON.stringify(info, null, 2));
-
   delete info['/'];
   res.json(info);
 });
-
-//var server  = http.createServer(app);
-//var io      = require('socket.io').listen(server);
 
 module.exports = app;
 console.log('Storypalette API available at api.*');
