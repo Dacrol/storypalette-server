@@ -57,9 +57,9 @@ app.get(apiBase + 'sound/*', fileManager.getSound);
 app.post(apiBase + 'file/*', fileManager.postFile);
 
 // Palette API.
-app.get(apiBase + 'palettes', auth.requireUser, api.palette.list);
+app.get(apiBase + 'palettes', api.palette.list);
 app.get(apiBase + 'palettes/:id', api.palette.get);
-app.post(apiBase + 'palettes', api.palette.create);
+app.post(apiBase + 'palettes', auth.requireUser, api.palette.create);
 app.put(apiBase + 'palettes/:id', api.palette.update);
 app.delete(apiBase + 'palettes/:id', api.palette.destroy);
 app.get(apiBase + 'resources', api.resource.list);
