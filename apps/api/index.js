@@ -16,6 +16,7 @@ var auth            = require('../../lib/auth');
 var api             = require('../../lib/api');
 var app = module.exports = express();
 var expressJwt      = require('express-jwt');
+var socketioJwt     = require('socketio-jwt');
 var fileManager     = require('../../lib/fileManager')(app, config);
 
 // Init authorization middleware.
@@ -73,6 +74,9 @@ app.delete(apiBase + 'users/:id', api.user.remove);
 app.get(apiBase + 'users/:id/players', api.user.getPlayers);
 app.get(apiBase + 'organisations', api.organisation.list);
 app.get(apiBase + 'organisations/:id', api.organisation.get);
+
+// Pass server side config info to client.
+
 
 
 /*
@@ -155,6 +159,9 @@ io.use(function(socket, next) {
 });
 */
 
+
+///////////////////////////////
+
 // We use one socket-namespace per organisation
 var sioNamespaces = [];
 var orgs = {};
@@ -175,28 +182,26 @@ function setupSockets(organisations) {
     // store for visualisation lookup
     orgs['/' + org._id] = org.name;
 
+    // Require token in querystring.
+    io.of('/' + org._id).use(socketioJwt.authorize({
+      secret: config.server.tokenSecret,
+      handshake: true
+    }));
+
     sioNamespaces[i] = io.of('/' + org._id)
       .on('connection', function(socket) {
         console.log('>>> Socket client connected: ', socket.id);
+        console.log('hello! ', socket.decoded_token.username);
+        socket.spUser = {
+          userId: socket.decoded_token._id,
+          username:  socket.decoded_token.username,
+          role:  socket.decoded_token.role
+        };
 
         // Join a room
         socket.on('join', function(room) {
-
-          console.log('socket.join room=', room);
-
-          var user = socket.request.user;
-          if (socket.handshake.user) {
-            // Store user info for later visualisation uses
-            // TODO: fix!
-            socket.spUser = {_id: user._id, username: user.username, role: user.role};
-            console.log('User "' + user.username + '" joined room "' + room + '"');
-          }
-
-
-          //console.log('')
           // Store roomname for later use
           socket.spRoom = room;
-          socket.spApa = 'knasboll';
 
           // Join the room
           socket.join(room);
@@ -219,7 +224,7 @@ function setupSockets(organisations) {
           socket.broadcast.to(socket.spRoom).emit('onPaletteUpdate', palette);
         });
 
-        // erformer
+        // Performer
         socket.on('requestPalette', function(paletteId) {
           console.log('>>> requestPalette', paletteId);
           socket.broadcast.to(socket.spRoom).emit('onRequestPalette', paletteId);
@@ -292,17 +297,25 @@ app.get(apiBase + 'info/activity', function(req, res) {
 
     // All the sockets connected to this namespace.
     _.each(ns.connected, function(socket) {
-      info[ns.name].rooms[socket.spRoom] = {
-        name: socket.spRoom,
-        socketId: socket.id
-        //userId: user._id,
+      console.log('socket in ns', ns.name, ' has id', socket.id);
+
+      if (!info[ns.name].rooms[socket.spRoom]) {
+        info[ns.name].rooms[socket.spRoom] = {
+          name: socket.spRoom,
+          clients: []
+        };
+      }
+
+      info[ns.name].rooms[socket.spRoom].clients.push({
+        socketId: socket.id,
+        user: socket.spUser
         //username: user.username,
         //role: user.role
-      };
+      });
     });
   });
 
-  console.log(JSON.stringify(info, null, 2));
+  //console.log(JSON.stringify(info, null, 2));
 
   delete info['/'];
   res.json(info);
