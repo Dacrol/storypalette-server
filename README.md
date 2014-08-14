@@ -4,12 +4,26 @@
 
 ## Installing
 
+1. Make sure you have the prerequisites: 
+
+node.js
 ```sh
 brew install freeimage
 brew install mongodb
-git clone ...
+sudo npm install -g grunt-cli
 
 ```
+
+2. Clone and build:
+
+```sh
+git clone https://github.com/storypalette/storypalette-server.git
+cd storypalette-server
+npm install imops --save
+grunt collate
+```
+
+3. Add super-secret config files (talk to Erik for now).
 
 ## Running
 

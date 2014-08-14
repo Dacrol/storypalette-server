@@ -210,31 +210,31 @@ function setupSockets(organisations) {
           socket.emit('onJoin', room);
         });
 
-        // Editor
+        // Player --> Performer
         socket.on('activePalette', function(palette) {
           console.log('>>> activePalette', palette.name);
           socket.broadcast.to(socket.spRoom).emit('onActivePalette', palette);
+        });
+
+        // Performer --> Player
+        socket.on('requestPalette', function(paletteId) {
+          console.log('>>> requestPalette', paletteId);
+          socket.broadcast.to(socket.spRoom).emit('onRequestPalette', paletteId);
         });
         socket.on('paletteDeactivate', function() {
           console.log('>>> paletteDeactivate');
           socket.broadcast.to(socket.spRoom).emit('onPaletteDeactivate');
         });
-        socket.on('paletteUpdate', function(palette) {
-          console.log('>>> paletteUpdate', palette.name);
-          socket.broadcast.to(socket.spRoom).emit('onPaletteUpdate', palette);
-        });
-
-        // Performer
-        socket.on('requestPalette', function(paletteId) {
-          console.log('>>> requestPalette', paletteId);
-          socket.broadcast.to(socket.spRoom).emit('onRequestPalette', paletteId);
-        });
-
-        // Performer
         // data = {paletteId, assetId, value}
         socket.on('valueUpdate', function(data) {
           console.log('>>> valueUpdate - data=', data);
           socket.broadcast.to(socket.spRoom).emit('onValueUpdate', data);
+        });
+
+        // ??
+        socket.on('paletteUpdate', function(palette) {
+          console.log('>>> paletteUpdate', palette.name);
+          socket.broadcast.to(socket.spRoom).emit('onPaletteUpdate', palette);
         });
 
 
