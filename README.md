@@ -19,7 +19,7 @@ sudo npm install -g grunt-cli
 ```sh
 git clone https://github.com/storypalette/storypalette-server.git
 cd storypalette-server
-npm install imops --save
+npm install imops
 grunt collate
 ```
 
