@@ -28,6 +28,8 @@ cp config/defaultSample.js config/default.js
 
 ## Running
 
+Make sure you have installed storypalette-editor, storypalette-player, storypalette-performer-touch, then:
+
 ```sh
 NODE_ENV=production server.js
 ```
