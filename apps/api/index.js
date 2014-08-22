@@ -207,7 +207,7 @@ function setupSockets(organisations) {
           socket.join(room);
 
           // Tell the client that it joined the room
-          socket.emit('onJoin', room);
+          socket.emit('onJoin');
         });
 
         // Player --> Performer
@@ -227,7 +227,7 @@ function setupSockets(organisations) {
         });
         // data = {paletteId, assetId, value}
         socket.on('valueUpdate', function(data) {
-          console.log('>>> valueUpdate - data=', data);
+          console.log('>>> valueUpdate value.raw=', data.value.raw);
           socket.broadcast.to(socket.spRoom).emit('onValueUpdate', data);
         });
 
@@ -240,6 +240,7 @@ function setupSockets(organisations) {
 
         socket.on('disconnect', function() {
           console.log('>>> socket disconnected');
+          socket.broadcast.to(socket.spRoom).emit('onDisconnect', 'number of clients left');
           //socket.get('user', function(err, user) {
             //console.log('>>> Client "' + user.username + '" (' + socket.id + ') disconnected');
           //});
