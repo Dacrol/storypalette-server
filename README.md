@@ -4,17 +4,18 @@
 
 ## Installing
 
-1. Make sure you have the prerequisites: 
+### Prerequisites 
 
-node.js
+- node.js
+- homebrew
+
 ```sh
 brew install freeimage
 brew install mongodb
 sudo npm install -g grunt-cli
-
 ```
 
-2. Clone and build:
+### Clone, configure, build
 
 ```sh
 git clone https://github.com/storypalette/storypalette-server.git
