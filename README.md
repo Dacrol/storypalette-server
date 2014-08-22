@@ -24,6 +24,8 @@ npm install imops
 
 cp config/defaultSample.js config/default.js
 # Now, edit config/default.js with player username and password.
+
+# Optionally, copy existing resources to /resources
 ```
 
 ## Running
