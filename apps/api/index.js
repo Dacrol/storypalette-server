@@ -24,11 +24,6 @@ auth.init({
   db: db,
   secret: config.server.tokenSecret
 });
-
-app.all('/imago', function(req, res) {
-  console.log('imago');
-  res.send('imago');
-});
 // Middleware //////////////////////////////
 
 // Enable CORS for everything (for now)
@@ -53,7 +48,8 @@ app.post(apiBase + 'authenticate', auth.authenticate);
 
 // Media API.
 app.get(apiBase + 'image/*', fileManager.getImage);
-app.get(apiBase + 'sound/*', fileManager.getSound);
+//app.get(apiBase + 'sound/*', fileManager.getSound);
+app.get(apiBase + 'sound/:id/:ext', fileManager.getSound);
 app.post(apiBase + 'file/*', fileManager.postFile);
 
 // Palette API.

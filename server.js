@@ -11,6 +11,7 @@ var vhost = require('vhost');
 var app = express();
 var server = require('http').Server(app);
 var env = require('./lib/env')(config);
+var ffmpeg = require('fluent-ffmpeg');
 
 // Make socket available for all apps.
 global.io = require('socket.io')(server);
@@ -27,11 +28,9 @@ app.use(vhost('player.storypalette.*', require('./apps/player')));
 // Middleware for all apps.
 app.use(logger('dev'));
 
-
 app.get('/', function (req, res) {
   res.sendfile(__dirname + '/index.html');
 });
-
 
 // Start server.
 var port = process.env.PORT || config.server.port;
