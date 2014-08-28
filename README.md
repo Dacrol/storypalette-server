@@ -15,21 +15,29 @@ brew install mongodb
 sudo npm install -g grunt-cli
 ```
 
-### Clone, configure, build
+### Clone and build
 
 ```sh
 git clone https://github.com/storypalette/storypalette-server.git
 cd storypalette-server
 npm install imops
-grunt collate
-```
 
-3. Add super-secret config files (talk to Erik for now).
+cp config/defaultSample.js config/default.js
+# Now, edit config/default.js with player username and password.
+
+# Optionally, copy existing resources to /resources
+```
 
 ## Running
 
+Make sure you have installed storypalette-editor, storypalette-player, storypalette-performer-touch, then:
+
 ```sh
-cd storypalette-server
+NODE_ENV=production server.js
+```
+
+## Developing
+```sh
 grunt serve
 ```
 
