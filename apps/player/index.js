@@ -14,6 +14,10 @@ var app       = express();
 app.use(express.static(config.player.folder));
 app.use(favicon(path.join(config.player.folder, '/assets/favicon.ico')));
 
+app.get('/ping', function(req, res) {
+  res.status(200).send('pong');
+});
+
 // Routing.
 app.get('/*', function(req, res) {
   res.sendfile('index.html', {root: config.player.folder});
