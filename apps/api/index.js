@@ -43,7 +43,7 @@ app.post(apiBase + 'authenticate', auth.authenticate);
 // Media API.
 app.get(apiBase + 'image/*', fileManager.getImage);
 app.get(apiBase + 'sound/:id/:ext', fileManager.getSound);
-app.post(apiBase + 'file/*', fileManager.postFile);
+app.post(apiBase + 'file', fileManager.postFile);
 
 // Palette API.
 app.get(apiBase + 'palettes', api.palette.all);
