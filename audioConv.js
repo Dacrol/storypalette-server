@@ -1,40 +1,33 @@
-
 var spawn = require('child_process').spawn;
 var fs = require('fs');
 
 var inPath = 'test.mp3';
-var inFile = fs.createReadStream(inPath);
-
-inFile.on('error', function(err) {
-  console.log(err);
-});
-
 var outPath = 'testo.ogg';
 var outStream = fs.createWriteStream(outPath);
 
-//try {
-  var ffmpeg = spawn('ffmpeg', [
-    '-i', inPath,
-    '-f', 'ogg',
-    '-acodec', 'libvorbis',
-    'pipe:1'  // Output on stdout
-  ]);
-//} catch (e) {
-  //console.log('ERR:', e);
-}
+var ffmpeg = spawn('ffmpeg', [
+  '-i', inPath,
+  '-acodec', 'libvorbis',
+  '-f', 'ogg',                // Output format for the pipe.
+  'pipe:1'                    // Send output to sdtout.
+]);
   
-//var ffmpeg = child_process.spawn('ffmpeg', ['-i', 'pipe:0', '-f', 'mp4', '-movflags', 'frag_keyframe', 'pipe:1']);
-//inFile.pipe(ffmpeg.stdin);
-//ffmpeg.stdout.pipe(outStream);
+// Pipe ffmpeg output to output file.  
+ffmpeg.stdout.pipe(outStream);
 
-ffmpeg.stdout.on('end', function () {
-  console.log('file has been converted succesfully');
+outStream.on('close', function() {
+  console.log('CLOSE: outstream');
+  ffmpeg.kill();
 });
 
-ffmpeg.stdout.on('exit', function () {
-  console.log('child process exited');
+ffmpeg.stderr.on('exit', function() {
+  console.log('EXIT: child process exited');
 });
 
-ffmpeg.stderr.on('data', function (data) {
-  console.log('ERR', data.toString());
+ffmpeg.stderr.on('data', function(data) {
+  console.log('DATA', data.toString());
+});
+
+ffmpeg.stderr.on('end', function () {
+  console.log('END: file has been converted succesfully');
 });
