@@ -2,30 +2,30 @@
 var spawn = require('child_process').spawn;
 var fs = require('fs');
 
-var inputPath = 'test.mp3';
-var inputFile = fs.createReadStream(inputPath);
+var inPath = 'test.mp3';
+var inFile = fs.createReadStream(inPath);
 
-inputFile.on('error', function(err) {
+inFile.on('error', function(err) {
   console.log(err);
 });
 
-var outputPath = 'testo.ogg';
-var output_stream = fs.createWriteStream(outputPath);
+var outPath = 'testo.ogg';
+var outStream = fs.createWriteStream(outPath);
 
-var ffmpeg = spawn('ffmpeg', [
-  '-i', inputPath,
-  '-f', 'ogg',
-  '-acodec', 'libvorbis',
-  'pipe:1'  // Output on stdout
-]);
+//try {
+  var ffmpeg = spawn('ffmpeg', [
+    '-i', inPath,
+    '-f', 'ogg',
+    '-acodec', 'libvorbis',
+    'pipe:1'  // Output on stdout
+  ]);
+//} catch (e) {
+  //console.log('ERR:', e);
+}
   
 //var ffmpeg = child_process.spawn('ffmpeg', ['-i', 'pipe:0', '-f', 'mp4', '-movflags', 'frag_keyframe', 'pipe:1']);
-inputFile.pipe(ffmpeg.stdin);
-ffmpeg.stdout.pipe(output_stream);
-
-ffmpeg.stdout.on('data', function (data) {
-  //console.log(data.toString());
-});
+//inFile.pipe(ffmpeg.stdin);
+//ffmpeg.stdout.pipe(outStream);
 
 ffmpeg.stdout.on('end', function () {
   console.log('file has been converted succesfully');
