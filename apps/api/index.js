@@ -135,7 +135,7 @@ function setupSockets(organisations) {
         });
         // data = {paletteId, assetId, value}
         socket.on('valueUpdate', function(data) {
-          console.log('>>> valueUpdate value.raw=', data.value.raw);
+          //console.log('>>> valueUpdate value.raw=', data.value.raw);
           socket.broadcast.to(socket.spRoom).emit('onValueUpdate', data);
         });
 

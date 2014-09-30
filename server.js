@@ -11,7 +11,6 @@ var vhost = require('vhost');
 var app = express();
 var server = require('http').Server(app);
 var env = require('./lib/env')(config);
-var ffmpeg = require('fluent-ffmpeg');
 
 // Make socket available for all apps.
 global.io = require('socket.io')(server);
