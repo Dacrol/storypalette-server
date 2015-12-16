@@ -10,7 +10,6 @@
 - homebrew
 
 ```sh
-brew install freeimage
 brew install mongodb
 sudo npm install -g grunt-cli
 ```
@@ -20,7 +19,6 @@ sudo npm install -g grunt-cli
 ```sh
 git clone https://github.com/storypalette/storypalette-server.git
 cd storypalette-server
-npm install imops
 
 cp config/defaultSample.js config/default.js
 # Now, edit config/default.js with player username and password.
