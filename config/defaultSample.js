@@ -11,7 +11,11 @@ module.exports = {
     port: 8888,
     tokenSecret: 'SECRET_HERE', 
     resources: path.resolve(__dirname, '../resources'), 
-    cache: path.resolve(__dirname, '../cache')
+    cache: path.resolve(__dirname, '../cache'),
+    aws: {
+      accessKeyId: 'KEY HERE',
+      secretAccessKey: 'SECRET HERE'
+    }
   },
   editor: {
     folder: path.resolve(__dirname, '../../storypalette-editor/build'), 
