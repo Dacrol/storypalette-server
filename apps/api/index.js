@@ -1,7 +1,5 @@
 // Storypalette API
 
-'use strict';
-
 var _               = require('lodash');
 var config          = require('config');
 var path            = require('path');
@@ -19,40 +17,13 @@ var expressJwt      = require('express-jwt');
 var socketioJwt     = require('socketio-jwt');
 var fileManager     = require('../../lib/fileManager')(app, config);
 var apiBase         = '/v1/';
-var cloudinary      = require('cloudinary');
-
-// Cloudinary
-cloudinary.config({ 
-  cloud_name: 'storypalette', 
-  api_key: '881748529644387', 
-  api_secret: 'oTKcRHX1IQSDd3u7jwZdcJgWQr4' 
-});
-
-//var pathToImages = "/Users/rava/lab/storypalette-server/resources/image/";
-//bulkUploadToCloudinary(pathToImages);
-
-function bulkUploadToCloudinary(pathToImages) 
-{
-  var fs = require('fs');
-  fs.readdir(pathToImages, function (err, images) {
-    for (var i = 0; i < images.length; i++) {
-      setTimeout(uploadToCloudinary, i * 5000, pathToImages + images[i]);
-    }
-  });
-}
-
-function uploadToCloudinary(filepath)
-{
-  cloudinary.uploader.upload(filepath, function (result) {
-        console.log(filepath);
-  }, { use_filename: true, unique_filename: false });
-}
 
 // Init authorization middleware.
 auth.init({
   db: db,
   secret: config.server.tokenSecret
 });
+
 // Middleware //////////////////////////////
 
 // Enable CORS for everything (for now)
@@ -60,7 +31,6 @@ app.use(cors());
 
 // Parse application/json, TODO: Do we need urlencoded?
 app.use(bodyParser.json());
-
 
 // API status and info.
 app.all(apiBase, api.info.main);
@@ -94,8 +64,6 @@ app.get(apiBase + 'users/:id/players', api.user.getPlayers);
 
 app.get(apiBase + 'organisations', api.organisation.list);
 app.get(apiBase + 'organisations/:id', api.organisation.get);
-
-//app.get(apiBase + 'bulkupload',  fileManager.bulkUploadToCloudinary)
 
 // Ssetup sockets
 var io = global.io;
