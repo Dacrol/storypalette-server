@@ -1,7 +1,7 @@
 {
   "name": "storypalette-server",
   "description": "Backend for the Storypalette system",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "dependencies": {
     "async": "^1.5.0",
     "body-parser": "^1.5.2",
