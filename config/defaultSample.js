@@ -30,7 +30,9 @@ module.exports = {
     folder: path.resolve(__dirname, '../../storypalette-performer-touch/build'), 
   },
   db: {
-    name: 'storypalette',
+    user: '<dbuser>',
+    password: '<dbpass>',
+    name: 'ds019048.mlab.com:19048/storypalette',
     collections: ['users', 'palettes', 'organisations', 'resources']
   }
 };

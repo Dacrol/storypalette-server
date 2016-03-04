@@ -1,15 +1,19 @@
 // Storypalette API
 
-var _               = require('lodash');
-var config          = require('config');
-var path            = require('path');
-var http            = require('http');
-var express         = require('express');
-var bodyParser      = require('body-parser');
-var cors            = require('cors');
-var mongo           = require('mongojs');
-var querystring     = require('querystring');
-var db              = require('../../lib/db').getDb(config.db.name, config.db.collections);
+var _  = require('lodash');
+var config = require('config');
+var path = require('path');
+var http = require('http');
+var express = require('express');
+var bodyParser  = require('body-parser');
+var cors = require('cors');
+var mongo = require('mongojs');
+var querystring = require('querystring');
+var db = require('../../lib/db').getDb({
+  user: config.db.user,
+  password: config.db.password,
+  name: config.db.name,
+}, config.db.collections);
 var auth            = require('../../lib/auth');
 var api             = require('../../lib/api');
 var app = module.exports = express();
