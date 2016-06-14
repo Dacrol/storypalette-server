@@ -20,9 +20,6 @@ app.get('/env.js', env);
 
 // Storypalette apps are vhosts in subdomains.
 app.use(vhost('api.storypalette.*', require('./apps/api')));
-app.use(vhost('editor.storypalette.*', require('./apps/editor')));
-app.use(vhost('performer.storypalette.*', require('./apps/performer')));
-app.use(vhost('player.storypalette.*', require('./apps/player')));
 
 // Middleware for all apps.
 app.use(logger('dev'));
