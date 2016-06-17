@@ -1,18 +1,13 @@
 # storypalette-server
 
-> Backend for the Storypalette system: REST API, HTTP/Websocket server, and some database utils.
+REST API and Websocket server for Storypalette
 
 ## Installing
 
-### Prerequisites 
+### Dependencies 
 
 - node.js
-- homebrew
-
-```sh
-brew install mongodb
-sudo npm install -g grunt-cli
-```
+- ffmpeg
 
 ### Clone and build
 
@@ -28,15 +23,13 @@ cp config/defaultSample.js config/default.js
 
 ## Running
 
-Make sure you have installed storypalette-editor, storypalette-player, storypalette-performer-touch, then:
-
 ```sh
 NODE_ENV=production server.js
 ```
 
 ## Developing
 ```sh
-grunt serve
+TODO
 ```
 
 You may want to edit /etc/hosts for local development:

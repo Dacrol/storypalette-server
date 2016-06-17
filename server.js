@@ -46,18 +46,18 @@ app.use(bodyParser.json());
 
 var apiBase = '/v1/';
 
-// API status and info.
+// API status and info
 app.all(apiBase, api.info.main);
 
-// Authentication API.
+// Authentication API
 app.post(apiBase + 'authenticate', auth.authenticate);
 
-// Media API.
+// Media API
 app.get(apiBase + 'image/*', fileManager.getImage);
 app.get(apiBase + 'sound/:id/:ext', fileManager.getSound);
 app.post(apiBase + 'file', fileManager.postFile);
 
-// Palette API.
+// Palette API
 app.get(apiBase + 'palettes', api.palette.all);
 app.get(apiBase + 'palettes/:id', api.palette.one);
 app.post(apiBase + 'palettes', api.palette.create);
@@ -78,8 +78,6 @@ app.get(apiBase + 'users/:id/players', api.user.getPlayers);
 
 app.get(apiBase + 'organisations', api.organisation.list);
 app.get(apiBase + 'organisations/:id', api.organisation.get);
-
-
 
 // Start server.
 var port = process.env.PORT || config.server.port;

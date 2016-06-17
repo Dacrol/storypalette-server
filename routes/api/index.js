@@ -14,7 +14,6 @@ var db = require('../../lib/db').getDb({
 }, config.db.collections);
 var api = require('../../lib/api');
 var app = module.exports = express();
-var expressJwt = require('express-jwt');
 var socketioJwt = require('socketio-jwt');
 
 // Ssetup sockets
@@ -140,5 +139,4 @@ app.get(apiBase + 'info/activity', function(req, res) {
 });
 
 module.exports = app;
-console.log('Storypalette API available at api.*');
 
