@@ -28,7 +28,7 @@ app.use(morgan('dev'));
 // Init authorization middleware.
 auth.init({
   db: db,
-  secret: config.server.tokenSecret
+  secret: config.tokenSecret
 });
 
 // Enable CORS for everything (for now)
@@ -73,7 +73,7 @@ app.get(apiBase + 'organisations', api.organisation.list);
 app.get(apiBase + 'organisations/:id', api.organisation.get);
 
 // Start server.
-var port = process.env.PORT || config.server.port;
+var port = process.env.PORT || config.port;
 server.listen(port, function() {
   console.log('storypalette-server listening on port %d in %s mode', port, app.settings.env);
 });
