@@ -12,7 +12,6 @@ var app = express();
 
 var fileManager = require('./lib/fileManager')(app, config);
 var server = require('http').Server(app);
-var env = require('./lib/env')(config);
 
 var db = require('./lib/db').getDb({
   user: config.db.user,
@@ -25,12 +24,6 @@ var api = require('./lib/api');
 global.io = require('socket.io')(server);
 
 app.use(morgan('dev'));
-
-// Pass server environment info to client.
-app.get('/env.js', env);
-
-// Storypalette apps are vhosts in subdomains.
-//app.use(vhost('api.storypalette.*', require('./apps/api')));
 
 // Init authorization middleware.
 auth.init({
