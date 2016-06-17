@@ -1,9 +1,7 @@
 .DS_Store
-/cache
-/resources
 /config/default.js
 /config/runtime.json
 /extras
 /data
-/node_modules/imops
+/node_modules/
 npm-debug.log

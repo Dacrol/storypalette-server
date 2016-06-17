@@ -41,6 +41,20 @@ var DynamoDBSet = require('./set');
 AWS.DynamoDB.DocumentClient = AWS.util.inherit({
 
   /**
+   * @api private
+   */
+  operations: {
+    batchGetItem: 'batchGet',
+    batchWriteItem: 'batchWrite',
+    putItem: 'put',
+    getItem: 'get',
+    deleteItem: 'delete',
+    updateItem: 'update',
+    scan: 'scan',
+    query: 'query'
+  },
+
+  /**
    * Creates a DynamoDB document client with a set of configuration options.
    *
    * @option options params [map] An optional map of parameters to bind to every
@@ -120,14 +134,11 @@ AWS.DynamoDB.DocumentClient = AWS.util.inherit({
    *  });
    *
    */
-  batchGet: function(input, callback) {
+  batchGet: function(params, callback) {
     var self = this;
-    var translator = self.getTranslator();
-    var inputShape = self.service.api.operations.batchGetItem.input;
-    var outputShape = self.service.api.operations.batchGetItem.output;
-    var params = translator.translateInput(input, inputShape);
     var request = self.service.batchGetItem(params);
-    self.setupRequest(request, outputShape, translator);
+    self.setupRequest(request);
+    self.setupResponse(request);
     if (typeof callback === 'function') {
       request.send(callback);
     }
@@ -174,14 +185,11 @@ AWS.DynamoDB.DocumentClient = AWS.util.inherit({
    *  });
    *
    */
-  batchWrite: function(input, callback) {
+  batchWrite: function(params, callback) {
     var self = this;
-    var translator = self.getTranslator();
-    var inputShape = self.service.api.operations.batchWriteItem.input;
-    var outputShape = self.service.api.operations.batchWriteItem.output;
-    var params = translator.translateInput(input, inputShape);
     var request = self.service.batchWriteItem(params);
-    self.setupRequest(request, outputShape, translator);
+    self.setupRequest(request);
+    self.setupResponse(request);
     if (typeof callback === 'function') {
       request.send(callback);
     }
@@ -198,7 +206,7 @@ AWS.DynamoDB.DocumentClient = AWS.util.inherit({
    * @see AWS.DynamoDB.deleteItem
    * @example Delete an item from a table
    *  var params = {
-   *    TableName = 'Table',
+   *    TableName : 'Table',
    *    Key: {
    *      HashKey: 'hashkey',
    *      NumberRangeKey: 1
@@ -213,14 +221,11 @@ AWS.DynamoDB.DocumentClient = AWS.util.inherit({
    *  });
    *
    */
-  delete: function(input, callback) {
+  delete: function(params, callback) {
     var self = this;
-    var translator = self.getTranslator();
-    var inputShape = self.service.api.operations.deleteItem.input;
-    var outputShape = self.service.api.operations.deleteItem.output;
-    var params = translator.translateInput(input, inputShape);
     var request = self.service.deleteItem(params);
-    self.setupRequest(request, outputShape, translator);
+    self.setupRequest(request);
+    self.setupResponse(request);
     if (typeof callback === 'function') {
       request.send(callback);
     }
@@ -237,7 +242,7 @@ AWS.DynamoDB.DocumentClient = AWS.util.inherit({
    * @see AWS.DynamoDB.getItem
    * @example Get an item from a table
    *  var params = {
-   *    TableName = 'Table',
+   *    TableName : 'Table',
    *    Key: {
    *      HashKey: 'hashkey'
    *    }
@@ -251,14 +256,11 @@ AWS.DynamoDB.DocumentClient = AWS.util.inherit({
    *  });
    *
    */
-  get: function(input, callback) {
+  get: function(params, callback) {
     var self = this;
-    var translator = self.getTranslator();
-    var inputShape = self.service.api.operations.getItem.input;
-    var outputShape = self.service.api.operations.getItem.output;
-    var params = translator.translateInput(input, inputShape);
     var request = self.service.getItem(params);
-    self.setupRequest(request, outputShape, translator);
+    self.setupRequest(request);
+    self.setupResponse(request);
     if (typeof callback === 'function') {
       request.send(callback);
     }
@@ -275,7 +277,7 @@ AWS.DynamoDB.DocumentClient = AWS.util.inherit({
    * @see AWS.DynamoDB.putItem
    * @example Create a new item in a table
    *  var params = {
-   *    TableName = 'Table',
+   *    TableName : 'Table',
    *    Item: {
    *       HashKey: 'haskey',
    *       NumAttribute: 1,
@@ -294,14 +296,11 @@ AWS.DynamoDB.DocumentClient = AWS.util.inherit({
    *  });
    *
    */
-  put: function(input, callback) {
+  put: function put(params, callback) {
     var self = this;
-    var translator = self.getTranslator();
-    var inputShape = self.service.api.operations.putItem.input;
-    var outputShape = self.service.api.operations.putItem.output;
-    var params = translator.translateInput(input, inputShape);
     var request = self.service.putItem(params);
-    self.setupRequest(request, outputShape, translator);
+    self.setupRequest(request);
+    self.setupResponse(request);
     if (typeof callback === 'function') {
       request.send(callback);
     }
@@ -332,20 +331,17 @@ AWS.DynamoDB.DocumentClient = AWS.util.inherit({
    *
    *  var docClient = new AWS.DynamoDB.DocumentClient();
    *
-   *  docClient.updateItem(params, function(err, data) {
+   *  docClient.update(params, function(err, data) {
    *     if (err) console.log(err);
    *     else console.log(data);
    *  });
    *
    */
-  update: function(input, callback) {
+  update: function(params, callback) {
     var self = this;
-    var translator = self.getTranslator();
-    var inputShape = self.service.api.operations.updateItem.input;
-    var outputShape = self.service.api.operations.updateItem.output;
-    var params = translator.translateInput(input, inputShape);
     var request = self.service.updateItem(params);
-    self.setupRequest(request, outputShape, translator);
+    self.setupRequest(request);
+    self.setupResponse(request);
     if (typeof callback === 'function') {
       request.send(callback);
     }
@@ -362,9 +358,9 @@ AWS.DynamoDB.DocumentClient = AWS.util.inherit({
    * @see AWS.DynamoDB.scan
    * @example Scan the table with a filter expression
    *  var params = {
-   *    TableName = 'Table',
-   *    FilterExpression = 'Year = :this_year',
-   *    ExpressionAttributeValues = {':this_year' = 2015}
+   *    TableName : 'Table',
+   *    FilterExpression : 'Year = :this_year',
+   *    ExpressionAttributeValues : {':this_year' : 2015}
    *  };
    *
    *  var docClient = new AWS.DynamoDB.DocumentClient();
@@ -375,14 +371,11 @@ AWS.DynamoDB.DocumentClient = AWS.util.inherit({
    *  });
    *
    */
-  scan: function(input, callback) {
+  scan: function(params, callback) {
     var self = this;
-    var translator = self.getTranslator();
-    var inputShape = self.service.api.operations.scan.input;
-    var outputShape = self.service.api.operations.scan.output;
-    var params = translator.translateInput(input, inputShape);
     var request = self.service.scan(params);
-    self.setupRequest(request, outputShape, translator);
+    self.setupRequest(request);
+    self.setupResponse(request);
     if (typeof callback === 'function') {
       request.send(callback);
     }
@@ -415,14 +408,11 @@ AWS.DynamoDB.DocumentClient = AWS.util.inherit({
     *  });
     *
     */
-  query: function(input, callback) {
+  query: function(params, callback) {
     var self = this;
-    var translator = self.getTranslator();
-    var inputShape = self.service.api.operations.query.input;
-    var outputShape = self.service.api.operations.query.output;
-    var params = translator.translateInput(input, inputShape);
     var request = self.service.query(params);
-    self.setupRequest(request, outputShape, translator);
+    self.setupRequest(request);
+    self.setupResponse(request);
     if (typeof callback === 'function') {
       request.send(callback);
     }
@@ -471,11 +461,57 @@ AWS.DynamoDB.DocumentClient = AWS.util.inherit({
   /**
    * @api private
    */
-  setupRequest: function(request, shape, translator) {
-    request.on('extractData', function(response) {
-      var output = translator.translateOutput(response.data, shape);
-      response.data = output;
+  setupRequest: function setupRequest(request) {
+    var self = this;
+    var translator = self.getTranslator();
+    var operation = request.operation;
+    var inputShape = request.service.api.operations[operation].input;
+    request._events.validate.unshift(function(req) {
+      req.rawParams = AWS.util.copy(req.params);
+      req.params = translator.translateInput(req.rawParams, inputShape);
     });
+  },
+
+  /**
+   * @api private
+   */
+  setupResponse: function setupResponse(request) {
+    var self = this;
+    var translator = self.getTranslator();
+    var outputShape = self.service.api.operations[request.operation].output;
+    request.on('extractData', function(response) {
+      response.data = translator.translateOutput(response.data, outputShape);
+    });
+
+    var response = request.response;
+    response.nextPage = function(cb) {
+      var resp = this;
+      var req = resp.request;
+      var config;
+      var service = req.service;
+      var operation = req.operation;
+      try {
+        config = service.paginationConfig(operation, true);
+      } catch (e) { resp.error = e; }
+
+      if (!resp.hasNextPage()) {
+        if (cb) cb(resp.error, null);
+        else if (resp.error) throw resp.error;
+        return null;
+      }
+
+      var params = AWS.util.copy(req.rawParams);
+      if (!resp.nextPageTokens) {
+        return cb ? cb(null, null) : null;
+      } else {
+        var inputTokens = config.inputToken;
+        if (typeof inputTokens === 'string') inputTokens = [inputTokens];
+        for (var i = 0; i < inputTokens.length; i++) {
+          params[inputTokens[i]] = resp.nextPageTokens[i];
+        }
+        return self[operation](params, cb);
+      }
+    };
   }
 
 });
