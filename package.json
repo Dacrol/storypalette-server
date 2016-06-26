@@ -5,6 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server",
+    "watch": "nodemon server",
     "deploy": "git push heroku master"
   },
   "dependencies": {
