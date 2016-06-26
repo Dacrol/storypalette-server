@@ -1,7 +1,7 @@
 {
   "name": "storypalette-server",
   "description": "Backend for the Storypalette system",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "license": "ISC",
   "homepage": "http://www.storypalette.net",
   "repository": "https://github.com/storypalette/storypalette-server",
