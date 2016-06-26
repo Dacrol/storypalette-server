@@ -1,13 +1,8 @@
 // Storypalette Sockets API
 
 var _  = require('lodash');
-var config = require('config');
 var path = require('path');
-var db = require('../../lib/db').getDb({
-  user: config.db.user,
-  password: config.db.password,
-  name: config.db.name,
-}, config.db.collections);
+var db = require('../../lib/db').getDb(process.env.MONGO_URI);
 var socketioJwt = require('socketio-jwt');
 
 // We use one socket-namespace per organisation
@@ -40,7 +35,7 @@ function setupSockets(organisations, io) {
 
     // Require token in querystring.
     io.of('/' + org._id).use(socketioJwt.authorize({
-      secret: config.tokenSecret,
+      secret: process.env.TOKEN_SECRET,
       handshake: true
     }));
 

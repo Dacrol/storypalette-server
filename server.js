@@ -1,21 +1,16 @@
-// api.storypalette.net
+require('dotenv').load();
 
-var config = require('config');
+var config = require('./config');
 var express = require('express');
 var morgan = require('morgan');
 var cors = require('cors');
 var bodyParser  = require('body-parser');
 
-var auth = require('./lib/auth');
 var app = express();
-var fileManager = require('./lib/fileManager')(app, config);
 
-var db = require('./lib/db').getDb({
-  user: config.db.user,
-  password: config.db.password,
-  name: config.db.name,
-}, config.db.collections);
-
+var auth = require('./lib/auth');
+var fileManager = require('./lib/fileManager')(app, config.resourcesFolder);
+var db = require('./lib/db').getDb(process.env.MONGO_URI);
 var api = require('./lib/api');
 
 // Setup sockets
@@ -28,7 +23,7 @@ app.use(morgan('dev'));
 // Init authorization middleware.
 auth.init({
   db: db,
-  secret: config.tokenSecret
+  secret: process.env.TOKEN_SECRET,
 });
 
 // Enable CORS for everything (for now)
