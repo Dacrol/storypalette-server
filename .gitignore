@@ -1,8 +1,6 @@
 .DS_Store
-/config/default.js
-/config/runtime.json
+/node_modules
 /extras
 /data
-/node_modules
 npm-debug.log
 /.env
