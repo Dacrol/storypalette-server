@@ -7,21 +7,21 @@ var cors = require('cors');
 var bodyParser  = require('body-parser');
 
 var auth = require('./lib/auth');
-
 var app = express();
-
 var fileManager = require('./lib/fileManager')(app, config);
-var server = require('http').Server(app);
 
 var db = require('./lib/db').getDb({
   user: config.db.user,
   password: config.db.password,
   name: config.db.name,
 }, config.db.collections);
+
 var api = require('./lib/api');
 
-// Make socket available for all apps.
-global.io = require('socket.io')(server);
+// Setup sockets
+var server = require('http').Server(app);
+require('./routes/ws')(server);
+
 
 app.use(morgan('dev'));
 
