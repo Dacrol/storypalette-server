@@ -15,7 +15,7 @@ var sioNamespaces = [];
 var orgs = {};
 
 // Entry point
-module.exports = function(server) {
+module.exports = function(server, app) {
   var io = require('socket.io')(server);
 
   db.collection('organisations').find(function (err, organisations) {
@@ -23,7 +23,9 @@ module.exports = function(server) {
       console.log(err);
     } else {
       setupSockets(organisations, io);
-      return io;
+
+      // TODO: Hacky, this shouldn't be done here
+      createActivityEndpoint(app, io);
     }
   });
 };
@@ -80,7 +82,7 @@ function setupSockets(organisations, io) {
         });
         // data = {paletteId, assetId, value}
         socket.on('valueUpdate', function(data) {
-          //console.log('>>> valueUpdate value.raw=', data.value.raw);
+          console.log('>>> valueUpdate value.raw=', data.value.raw);
           socket.broadcast.to(socket.spRoom).emit('onValueUpdate', data);
         });
 
@@ -103,41 +105,41 @@ function setupSockets(organisations, io) {
 } // setupSockets
 
 
-// Get info about currently connected users/sockets
-/*
-var apiBase = '/v1/';
+function createActivityEndpoint(app, io) {
+  // Get info about currently connected users/sockets
+  var apiBase = '/v1/';
 
-app.get(apiBase + 'info/activity', function(req, res) {
-  var info = {};
-  
-  // Get all room names per namespace
-  _.each(io.nsps, function(ns) {
-    info[ns.name] = {
-      name: ns.name, 
-      organisationName: orgs[ns.name],
-      rooms: {}
-    };
+  app.get(apiBase + 'info/activity', function(req, res) {
+    var info = {};
+    
+    // Get all room names per namespace
+    _.each(io.nsps, function(ns) {
+      info[ns.name] = {
+        name: ns.name, 
+        organisationName: orgs[ns.name],
+        rooms: {}
+      };
 
-    // All the sockets connected to this namespace.
-    _.each(ns.connected, function(socket) {
-      if (!info[ns.name].rooms[socket.spRoom]) {
-        info[ns.name].rooms[socket.spRoom] = {
-          name: socket.spRoom,
-          clients: []
-        };
-      }
+      // All the sockets connected to this namespace.
+      _.each(ns.connected, function(socket) {
+        if (!info[ns.name].rooms[socket.spRoom]) {
+          info[ns.name].rooms[socket.spRoom] = {
+            name: socket.spRoom,
+            clients: []
+          };
+        }
 
-      info[ns.name].rooms[socket.spRoom].clients.push({
-        socketId: socket.id,
-        user: socket.spUser
+        info[ns.name].rooms[socket.spRoom].clients.push({
+          socketId: socket.id,
+          user: socket.spUser
+        });
       });
     });
-  });
 
-  delete info['/'];
-  res.json(info);
-});
-*/
+    delete info['/'];
+    res.json(info);
+  });
+}
 
 
 

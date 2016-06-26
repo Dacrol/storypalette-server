@@ -19,9 +19,9 @@ var db = require('./lib/db').getDb({
 var api = require('./lib/api');
 
 // Setup sockets
-var server = require('http').Server(app);
-require('./routes/ws')(server);
-
+// And (for now) set up /info/activity endpoint
+const server = require('http').Server(app);
+require('./routes/ws')(server, app);
 
 app.use(morgan('dev'));
 
@@ -41,6 +41,7 @@ var apiBase = '/v1/';
 
 // API status and info
 app.all(apiBase, api.info.main);
+//app.get(`${apiBase}info/activity`, routes.api.activity);
 
 // Authentication API
 app.post(apiBase + 'authenticate', auth.authenticate);
