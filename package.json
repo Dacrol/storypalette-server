@@ -8,6 +8,9 @@
     "watch": "nodemon server",
     "deploy": "git push heroku master"
   },
+  "engines": {
+    "node": "5.8.0"
+  },
   "dependencies": {
     "async": "^1.5.0",
     "aws-sdk": "^2.4.0",
@@ -19,6 +22,7 @@
     "jsonwebtoken": "^0.4.1",
     "knox": "^0.9.2",
     "lodash": "^2.4.1",
+
     "mime": "~1.2.9",
     "mongojs": "^2.3.0",
     "morgan": "^1.7.0",
