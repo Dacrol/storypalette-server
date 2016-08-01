@@ -1,4 +1,4 @@
-require('dotenv').load();
+require('dotenv').config({silent: true});
 
 var config = require('./config');
 var express = require('express');
@@ -9,7 +9,7 @@ var bodyParser  = require('body-parser');
 var app = express();
 
 var auth = require('./lib/auth');
-var fileManager = require('./lib/fileManager')(app);// config.resourcesFolder);
+var fileManager = require('./lib/fileManager')(app);
 var db = require('./lib/db').getDb(process.env.MONGO_URI);
 var api = require('./lib/api');
 
