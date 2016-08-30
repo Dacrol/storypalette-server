@@ -1,5 +1,5 @@
 var path = require('path');
 
 module.exports = {
-  port: 8880,
+    port: 8880,
 };
